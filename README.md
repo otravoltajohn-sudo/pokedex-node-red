@@ -5,10 +5,11 @@ Uma Pokédex interativa desenvolvida com **Node-RED** que consome a API oficial 
 ## 🚀 Demonstração do Fluxo
 Aqui está como a lógica do projeto foi estruturada:
 
-![Fluxo do Node-RED](screenshots/fluxo.png)
+## 🚀 Demonstração do Fluxo
+![Fluxo do Node-RED](fluxo.png)
 
 ## 🎨 Interface
-![Interface da Pokédex](screenshots/interface.png)
+![Interface da Pokédex](interface.png)
 
 ## 🛠️ Tecnologias
 * [Node-RED](https://nodered.org/)
