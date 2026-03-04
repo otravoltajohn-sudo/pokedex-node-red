@@ -1,0 +1,394 @@
+[
+    {
+        "id": "pokedex_flow",
+        "type": "tab",
+        "label": "Projeto Pokédex",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "31f69594c64b1406",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-dark",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#ce0d0d",
+                "baseFont": "Century Gothic,CenturyGothic,AppleGothic,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#097479",
+                    "value": "#ce0d0d",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#ce0d0d",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#f23535",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#555555",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#ce0d0d",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "Century Gothic,CenturyGothic,AppleGothic,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "f22b7fd3d88abcdd",
+        "type": "ui_tab",
+        "name": "Pokedéx",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "2571d478030bd5e4",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "f22b7fd3d88abcdd",
+        "order": 1,
+        "disp": false,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "pokedex_tab",
+        "type": "ui_tab",
+        "name": "Pokédex",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "pokedex_group",
+        "type": "ui_group",
+        "name": "Pokédex",
+        "tab": "pokedex_tab",
+        "order": 1,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "form_node",
+        "type": "ui_form",
+        "z": "pokedex_flow",
+        "name": "",
+        "label": "",
+        "group": "pokedex_group",
+        "order": 5,
+        "width": 6,
+        "height": 4,
+        "options": [
+            {
+                "label": "Digite o nome",
+                "value": "pokemon",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "pokemon": ""
+        },
+        "payload": "",
+        "submit": "Buscar",
+        "cancel": "Limpar",
+        "topic": "topic",
+        "x": 110,
+        "y": 180,
+        "wires": [
+            [
+                "template_url"
+            ]
+        ]
+    },
+    {
+        "id": "template_url",
+        "type": "template",
+        "z": "pokedex_flow",
+        "name": "Montar URL",
+        "field": "url",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "https://pokeapi.co/api/v2/pokemon/{{payload.pokemon}}",
+        "output": "str",
+        "x": 290,
+        "y": 180,
+        "wires": [
+            [
+                "http_req"
+            ]
+        ]
+    },
+    {
+        "id": "http_req",
+        "type": "http request",
+        "z": "pokedex_flow",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 470,
+        "y": 180,
+        "wires": [
+            [
+                "switch_status",
+                "set_name",
+                "set_type",
+                "set_id",
+                "change_img"
+            ]
+        ]
+    },
+    {
+        "id": "switch_status",
+        "type": "switch",
+        "z": "pokedex_flow",
+        "name": "Erro?",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "200",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 630,
+        "y": 100,
+        "wires": [
+            [
+                "change_error"
+            ]
+        ]
+    },
+    {
+        "id": "change_error",
+        "type": "change",
+        "z": "pokedex_flow",
+        "name": "Msg Erro",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Pokémon não encontrado!",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 100,
+        "wires": [
+            [
+                "notify_node"
+            ]
+        ]
+    },
+    {
+        "id": "notify_node",
+        "type": "ui_toast",
+        "z": "pokedex_flow",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "topic": "",
+        "name": "",
+        "x": 950,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "set_name",
+        "type": "ui_text",
+        "z": "pokedex_flow",
+        "group": "pokedex_group",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Nome:",
+        "format": "{{msg.payload.name}}",
+        "layout": "row-spread",
+        "x": 650,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "set_type",
+        "type": "ui_text",
+        "z": "pokedex_flow",
+        "group": "pokedex_group",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Tipo:",
+        "format": "{{msg.payload.types[0].type.name}}",
+        "layout": "row-spread",
+        "x": 650,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "set_id",
+        "type": "ui_text",
+        "z": "pokedex_flow",
+        "group": "pokedex_group",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "ID:",
+        "format": "{{msg.payload.id}}",
+        "layout": "row-spread",
+        "x": 650,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "change_img",
+        "type": "change",
+        "z": "pokedex_flow",
+        "name": "Pegar Foto",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.sprites.front_default",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 320,
+        "wires": [
+            [
+                "img_template"
+            ]
+        ]
+    },
+    {
+        "id": "img_template",
+        "type": "ui_template",
+        "z": "pokedex_flow",
+        "group": "pokedex_group",
+        "name": "Media",
+        "order": 1,
+        "width": 6,
+        "height": 4,
+        "format": "<div style=\"text-align:center; background:#333; border-radius:15px; padding:10px;\">\n    <img src=\"{{msg.payload}}\" style=\"width:150px; image-rendering:pixelated;\">\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 810,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7de3658206d244fd",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
